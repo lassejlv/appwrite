@@ -20,7 +20,8 @@ function RouteComponent() {
     mutationKey: ['register'],
     mutationFn: async (data: { name: string; email: string; password: string }) => {
       const { name, email, password } = data;
-      return await account.create(ID.unique(), email, password, name);
+      await account.create(ID.unique(), email, password, name);
+      return await account.createEmailPasswordSession(email, password);
     },
     onSuccess: (data) => {
       console.log(data);
