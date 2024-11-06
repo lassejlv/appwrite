@@ -48,10 +48,10 @@ export default function Navbar() {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <>
+          <div className='grid gap-3'>
             <Link to='/login'>Login</Link>
             <Link to='/register'>Register</Link>
-          </>
+          </div>
         )}
       </div>
     </nav>
