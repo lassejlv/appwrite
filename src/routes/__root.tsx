@@ -5,6 +5,7 @@ import { Toaster } from 'sonner';
 import '../globals.css';
 import Notfound from '@/components/Notfound';
 import LoadingPage from '@/components/LoadingPage';
+import Navbar from '@/components/Navbar';
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -18,6 +19,7 @@ function RootComponent() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
+        <Navbar />
         <Toaster richColors />
         <Outlet />
       </QueryClientProvider>
