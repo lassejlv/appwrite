@@ -15,9 +15,9 @@ export default function Navbar() {
       <h1>Appwrite React</h1>
 
       <div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            {data ? (
+        {data ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
               <Avatar className='cursor-pointer'>
                 <AvatarImage src='/default' alt={data.name} />
                 <AvatarFallback>
@@ -25,31 +25,34 @@ export default function Navbar() {
                   {data.name.slice(-1)}
                 </AvatarFallback>
               </Avatar>
-            ) : (
-              <Link to='/login'>Login</Link>
-            )}
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className='w-56'>
-            <Link to='/app'>
-              <DropdownMenuItem>Dashboard</DropdownMenuItem>
-            </Link>
-            <DropdownMenuItem
-              onClick={async () => {
-                try {
-                  if (!data) throw new Error('Not logged in');
-                  await account.deleteSession(data.targets[0].$id);
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className='w-56'>
+              <Link to='/app'>
+                <DropdownMenuItem>Dashboard</DropdownMenuItem>
+              </Link>
+              <DropdownMenuItem
+                onClick={async () => {
+                  try {
+                    if (!data) throw new Error('Not logged in');
+                    await account.deleteSession(data.targets[0].$id);
 
-                  toast.success('Logged out!');
-                  navigate({ to: '/login' });
-                } catch (error: any) {
-                  toast.error(error.message);
-                }
-              }}
-            >
-              Logout
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+                    toast.success('Logged out!');
+                    navigate({ to: '/login' });
+                  } catch (error: any) {
+                    toast.error(error.message);
+                  }
+                }}
+              >
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <>
+            <Link to='/login'>Login</Link>
+            <Link to='/register'>Register</Link>
+          </>
+        )}
       </div>
     </nav>
   );

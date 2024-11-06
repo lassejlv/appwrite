@@ -2,13 +2,13 @@ import * as React from 'react';
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { searchSchema } from '../app/verify';
 import { account } from '@/lib/appwrite';
-import Container from '@/components/Container';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import Spinner from '@/components/Spinner';
+import Container from '@/components/Container';
 
 export const Route = createFileRoute('/login/recovery')({
   validateSearch: searchSchema,
