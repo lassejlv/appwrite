@@ -1,8 +1,10 @@
 {
   "name": "appwrite-react",
+  "description": "React, Tanstack Router/Query & Appwrite template. Build with users auth. Easy to use.",
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "license": "MIT",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "dev": "vite --port=3001",
