@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { account } from '@/lib/appwrite';
 import Container from '@/components/Container';
 
-const searchSchema = z.object({
+export const searchSchema = z.object({
   userId: z.string(),
   secret: z.string(),
   expire: z.string(),

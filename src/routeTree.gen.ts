@@ -12,9 +12,10 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as RegisterImport } from './routes/register'
-import { Route as LoginImport } from './routes/login'
 import { Route as IndexImport } from './routes/index'
+import { Route as LoginIndexImport } from './routes/login/index'
 import { Route as AppIndexImport } from './routes/app/index'
+import { Route as LoginRecoveryImport } from './routes/login/recovery'
 import { Route as AppVerifyImport } from './routes/app/verify'
 
 // Create/Update Routes
@@ -25,21 +26,27 @@ const RegisterRoute = RegisterImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const LoginRoute = LoginImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
+const LoginIndexRoute = LoginIndexImport.update({
+  id: '/login/',
+  path: '/login/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const AppIndexRoute = AppIndexImport.update({
   id: '/app/',
   path: '/app/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LoginRecoveryRoute = LoginRecoveryImport.update({
+  id: '/login/recovery',
+  path: '/login/recovery',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,13 +67,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginImport
-      parentRoute: typeof rootRoute
-    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -81,11 +81,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppVerifyImport
       parentRoute: typeof rootRoute
     }
+    '/login/recovery': {
+      id: '/login/recovery'
+      path: '/login/recovery'
+      fullPath: '/login/recovery'
+      preLoaderRoute: typeof LoginRecoveryImport
+      parentRoute: typeof rootRoute
+    }
     '/app/': {
       id: '/app/'
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -95,52 +109,70 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/app/verify': typeof AppVerifyRoute
+  '/login/recovery': typeof LoginRecoveryRoute
   '/app': typeof AppIndexRoute
+  '/login': typeof LoginIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/app/verify': typeof AppVerifyRoute
+  '/login/recovery': typeof LoginRecoveryRoute
   '/app': typeof AppIndexRoute
+  '/login': typeof LoginIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/app/verify': typeof AppVerifyRoute
+  '/login/recovery': typeof LoginRecoveryRoute
   '/app/': typeof AppIndexRoute
+  '/login/': typeof LoginIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/register' | '/app/verify' | '/app'
+  fullPaths:
+    | '/'
+    | '/register'
+    | '/app/verify'
+    | '/login/recovery'
+    | '/app'
+    | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register' | '/app/verify' | '/app'
-  id: '__root__' | '/' | '/login' | '/register' | '/app/verify' | '/app/'
+  to: '/' | '/register' | '/app/verify' | '/login/recovery' | '/app' | '/login'
+  id:
+    | '__root__'
+    | '/'
+    | '/register'
+    | '/app/verify'
+    | '/login/recovery'
+    | '/app/'
+    | '/login/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   AppVerifyRoute: typeof AppVerifyRoute
+  LoginRecoveryRoute: typeof LoginRecoveryRoute
   AppIndexRoute: typeof AppIndexRoute
+  LoginIndexRoute: typeof LoginIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   AppVerifyRoute: AppVerifyRoute,
+  LoginRecoveryRoute: LoginRecoveryRoute,
   AppIndexRoute: AppIndexRoute,
+  LoginIndexRoute: LoginIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -154,17 +186,15 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/login",
         "/register",
         "/app/verify",
-        "/app/"
+        "/login/recovery",
+        "/app/",
+        "/login/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/login": {
-      "filePath": "login.tsx"
     },
     "/register": {
       "filePath": "register.tsx"
@@ -172,8 +202,14 @@ export const routeTree = rootRoute
     "/app/verify": {
       "filePath": "app/verify.tsx"
     },
+    "/login/recovery": {
+      "filePath": "login/recovery.tsx"
+    },
     "/app/": {
       "filePath": "app/index.tsx"
+    },
+    "/login/": {
+      "filePath": "login/index.tsx"
     }
   }
 }

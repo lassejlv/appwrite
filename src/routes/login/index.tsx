@@ -8,8 +8,9 @@ import { account } from '@/lib/appwrite';
 import { toast } from 'sonner';
 import Spinner from '@/components/Spinner';
 import Container from '@/components/Container';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
-export const Route = createFileRoute('/login')({
+export const Route = createFileRoute('/login/')({
   component: RouteComponent,
 });
 
@@ -48,6 +49,37 @@ function RouteComponent() {
     login.mutate(data);
   };
 
+  const recovery = useMutation({
+    mutationKey: ['recovery'],
+    mutationFn: async (data: { email: string }) => {
+      const { email } = data;
+      return await account.createRecovery(email, import.meta.env.VITE_APP_URL + '/login/recovery');
+    },
+    onSuccess: (data) => {
+      console.log(data);
+
+      navigate({ to: '/login' });
+      toast.success('Recovery email sent!');
+    },
+
+    onError: (error) => {
+      console.log(error);
+      toast.error(error.message);
+    },
+  });
+
+  const recoverySubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    const data = {
+      email: formData.get('email') as string,
+    };
+
+    recovery.mutate(data);
+  };
+
   return (
     <Container padding>
       <form className='flex flex-col gap-5' onSubmit={submit}>
@@ -60,6 +92,23 @@ function RouteComponent() {
           <Label htmlFor='password'>Password</Label>
           <Input type='password' name='password' id='password' placeholder='Your password' />
         </div>
+
+        <Dialog>
+          <DialogTrigger asChild>
+            <span className='text-sm font-medium text-muted-foreground cursor-pointer'>Forgot password?</span>
+          </DialogTrigger>
+          <DialogContent className='sm:max-w-[425px]'>
+            <DialogHeader>
+              <DialogTitle>Account Recovery</DialogTitle>
+            </DialogHeader>
+            <form className='flex flex-col gap-5' onSubmit={recoverySubmit}>
+              <Input type='email' name='email' id='email' placeholder='Your email' />
+              <Button type='submit' variant='outline' disabled={recovery.isPending}>
+                {recovery.isPending ? <Spinner /> : 'Send recovery email'}
+              </Button>
+            </form>
+          </DialogContent>
+        </Dialog>
 
         <Button type='submit' variant='outline' disabled={login.isPending}>
           {login.isPending ? <Spinner /> : 'Login'}
