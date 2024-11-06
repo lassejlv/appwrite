@@ -27,7 +27,7 @@ function RouteComponent() {
       console.log(data);
 
       navigate({ to: '/app' });
-      toast.success('Account created! Welcome back!');
+      toast.success('Account created! Welcome to the app!');
     },
 
     onError: (error) => {
