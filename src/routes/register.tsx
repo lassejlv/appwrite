@@ -26,8 +26,8 @@ function RouteComponent() {
     onSuccess: (data) => {
       console.log(data);
 
-      navigate({ to: '/login' });
-      toast.success('Account created!');
+      navigate({ to: '/app' });
+      toast.success('Account created! Welcome back!');
     },
 
     onError: (error) => {
