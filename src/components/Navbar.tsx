@@ -1,14 +1,15 @@
-import React from 'react';
-import { useAuth } from '@/hooks/useAuth';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { Link, useNavigate } from '@tanstack/react-router';
-import { toast } from 'sonner';
-import { account } from '@/lib/appwrite';
+import React from 'react'
+import { useAuth } from '@/hooks/useAuth'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
+import { Link, useNavigate, useRouter } from '@tanstack/react-router'
+import { toast } from 'sonner'
+import { account } from '@/lib/appwrite'
 
 export default function Navbar() {
-  const navigate = useNavigate();
-  const { data } = useAuth();
+  const router = useRouter()
+  const navigate = useNavigate()
+  const { data } = useAuth()
 
   return (
     <nav className='flex items-center justify-between flex-wrap gap-4 py-4 px-12 border-b border-border'>
@@ -33,13 +34,14 @@ export default function Navbar() {
               <DropdownMenuItem
                 onClick={async () => {
                   try {
-                    if (!data) throw new Error('Not logged in');
-                    await account.deleteSession(data.targets[0].$id);
+                    if (!data) throw new Error('Not logged in')
+                    await account.deleteSession('current')
 
-                    toast.success('Logged out!');
-                    navigate({ to: '/login' });
+                    router.invalidate()
+                    toast.success('Logged out!')
+                    navigate({ to: '/login' })
                   } catch (error: any) {
-                    toast.error(error.message);
+                    toast.error(error.message)
                   }
                 }}
               >
@@ -55,5 +57,5 @@ export default function Navbar() {
         )}
       </div>
     </nav>
-  );
+  )
 }
